@@ -9,7 +9,9 @@ while ((command = Console.ReadLine()) != "PARTY")
 {
     if (command.Length == 8)
     {
-        if (Char.IsDigit(command[0]))
+        if (command.StartsWith("1") || command.StartsWith("2") || command.StartsWith("3") ||
+            command.StartsWith("4") || command.StartsWith("5") || command.StartsWith("6") ||
+            command.StartsWith("7") || command.StartsWith("8") || command.StartsWith("9") || command.StartsWith("0"))
         {
             vip.Add(command);
         }
@@ -20,15 +22,18 @@ while ((command = Console.ReadLine()) != "PARTY")
     }
     invitedPeople++;
 }
+
 while ((command = Console.ReadLine()) != "END")
 {
     if (vip.Contains(command))
     {
         vip.Remove(command);
+
     }
     else
     {
         regular.Remove(command);
+
     }
     attendees++;
 }
