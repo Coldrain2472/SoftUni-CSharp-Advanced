@@ -46,8 +46,7 @@ namespace CarManufacturer
 
         public void Drive(double distance)
         {
-            // bool canCarDrive = this.FuelQuantity - distance * this.FuelConsumption > 0;
-            if (this.FuelQuantity - distance * this.FuelConsumption > 0)
+            if (this.FuelQuantity - distance * this.FuelConsumption >= 0)
             {
                 FuelQuantity -= distance * this.FuelConsumption;
             }
@@ -55,15 +54,6 @@ namespace CarManufacturer
             {
                 Console.WriteLine("Not enough fuel to perform this trip!");
             }
-            
-            //if (canCarDrive)
-            //{
-            //    FuelQuantity -= distance * this.FuelConsumption;
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Not enough fuel to perform this trip!");
-            //}
         }
 
         public string WhoAmI()
