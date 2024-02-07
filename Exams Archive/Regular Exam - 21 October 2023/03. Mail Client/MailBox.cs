@@ -12,9 +12,7 @@ namespace MailClient
             Inbox = new List<Mail>();
             Archive = new List<Mail>();
         }
-        //Capacity - int
-        //Inbox – List<Mail>
-        //Archive – List<Mail>
+        
         public int Capacity { get; set; }
         public List<Mail> Inbox { get; set; }
         public List<Mail> Archive { get; set; }
