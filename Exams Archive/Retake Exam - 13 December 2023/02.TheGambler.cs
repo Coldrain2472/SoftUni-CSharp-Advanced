@@ -3,7 +3,8 @@ int size = int.Parse(Console.ReadLine());
 string[,] matrix = new string[size, size];
 int playerRow = 0;
 int playerCol = 0;
-int amount = 100;
+
+int money = 100;
 
 for (int row = 0; row < size; row++)
 {
@@ -12,6 +13,7 @@ for (int row = 0; row < size; row++)
     for (int col = 0; col < size; col++)
     {
         matrix[row, col] = matrixInfo[col].ToString();
+
         if (matrix[row, col] == "G")
         {
             playerRow = row;
@@ -22,19 +24,19 @@ for (int row = 0; row < size; row++)
 
 string command = string.Empty;
 bool isOutOfRange = false;
-bool isLostEverything = false;
 bool isJackPotHit = false;
+
 while ((command = Console.ReadLine()) != "end")
 {
     if (command == "up" && playerRow - 1 >= 0)
     {
         if (matrix[playerRow - 1, playerCol] == "W")
         {
-            amount += 100;
+            money += 100;
         }
         else if (matrix[playerRow - 1, playerCol] == "P")
         {
-            amount -= 200;
+            money -= 200;
         }
         else if (matrix[playerRow - 1, playerCol] == "J")
         {
@@ -44,7 +46,7 @@ while ((command = Console.ReadLine()) != "end")
             matrix[playerRow, playerCol] = "G";
             break;
         }
-        
+
         matrix[playerRow, playerCol] = "-";
         playerRow--;
         matrix[playerRow, playerCol] = "G";
@@ -53,11 +55,11 @@ while ((command = Console.ReadLine()) != "end")
     {
         if (matrix[playerRow + 1, playerCol] == "W")
         {
-            amount += 100;
+            money += 100;
         }
         else if (matrix[playerRow + 1, playerCol] == "P")
         {
-            amount -= 200;
+            money -= 200;
         }
         else if (matrix[playerRow + 1, playerCol] == "J")
         {
@@ -67,21 +69,20 @@ while ((command = Console.ReadLine()) != "end")
             matrix[playerRow, playerCol] = "G";
             break;
         }
+
         matrix[playerRow, playerCol] = "-";
         playerRow++;
         matrix[playerRow, playerCol] = "G";
-        
-        
     }
     else if (command == "left" && playerCol - 1 >= 0)
     {
         if (matrix[playerRow, playerCol - 1] == "W")
         {
-            amount += 100;
+            money += 100;
         }
         else if (matrix[playerRow, playerCol - 1] == "P")
         {
-            amount -= 200;
+            money -= 200;
         }
         else if (matrix[playerRow, playerCol - 1] == "J")
         {
@@ -94,63 +95,64 @@ while ((command = Console.ReadLine()) != "end")
         matrix[playerRow, playerCol] = "-";
         playerCol--;
         matrix[playerRow, playerCol] = "G";
-       
     }
     else if (command == "right" && playerCol + 1 < size)
     {
         if (matrix[playerRow, playerCol + 1] == "W")
         {
-            amount += 100;
+            money += 100;
         }
         else if (matrix[playerRow, playerCol + 1] == "P")
         {
-            amount -= 200;
+            money -= 200;
         }
         else if (matrix[playerRow, playerCol + 1] == "J")
         {
-
             isJackPotHit = true;
             matrix[playerRow, playerCol] = "-";
             playerCol++;
             matrix[playerRow, playerCol] = "G";
             break;
         }
-        matrix[playerRow,playerCol] = "-";
+        matrix[playerRow, playerCol] = "-";
         playerCol++;
         matrix[playerRow, playerCol] = "G";
-        
     }
     else
     {
         isOutOfRange = true;
         break;
     }
+    
 
-    if (amount <= 0)
+    if (money <= 0)
     {
-        isLostEverything = true;
         break;
     }
+
 }
 
-if (isJackPotHit)
-{
-    amount += 100_000;
-    Console.WriteLine("You win the Jackpot!");
-    Console.WriteLine($"End of the game. Total amount: {amount}$");
-}
-
-if (isOutOfRange || isLostEverything)
+if (isOutOfRange || money <= 0)
 {
     Console.WriteLine("Game over! You lost everything!");
     Environment.Exit(0);
 }
 
-if (!isJackPotHit)
+if (isJackPotHit)
 {
-    Console.WriteLine($"End of the game. Total amount: {amount}$");
+    money += 100_000;
+    Console.WriteLine("You win the Jackpot!");
+    Console.WriteLine($"End of the game. Total amount: {money}$");
 }
-PrintMatrix(matrix);
+else
+{
+    Console.WriteLine($"End of the game. Total amount: {money}$");
+}
+
+if (money > 0)
+{
+    PrintMatrix(matrix);
+}
 
 static void PrintMatrix(string[,] matrix)
 {
