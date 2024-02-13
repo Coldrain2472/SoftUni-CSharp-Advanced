@@ -42,7 +42,6 @@ else
     Console.WriteLine("There are no matches.");
 }
 
-
 if (!worms.Any() && matchesCount == wormsCount)
 {
     Console.WriteLine("Every worm found a suitable hole!");
