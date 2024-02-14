@@ -3,64 +3,57 @@ using System;
 
 Queue<int> tools = new Queue<int>(Console.ReadLine()
     .Split(" ", StringSplitOptions.RemoveEmptyEntries)
-    .Select(int.Parse)
-    .ToArray());
+    .Select(int.Parse));
 
 Stack<int> substances = new Stack<int>(Console.ReadLine()
     .Split(" ", StringSplitOptions.RemoveEmptyEntries)
-    .Select(int.Parse)
-    .ToArray());
+    .Select(int.Parse));
 
 List<int> challenges = Console.ReadLine()
     .Split(" ", StringSplitOptions.RemoveEmptyEntries)
     .Select(int.Parse)
     .ToList();
 
-while (tools.Any() && substances.Any() && challenges.Count > 0)
+while (tools.Any() && substances.Any() && challenges.Any())
 {
     int result = tools.Peek() * substances.Peek();
+
     if (challenges.Contains(result))
     {
         tools.Dequeue();
         substances.Pop();
         challenges.Remove(result);
-
     }
-    else // the challenge is NOT resolved
+    else
     {
-        int newTool = tools.Dequeue() + 1;
-        tools.Enqueue(newTool);
-        int newSubstance = substances.Pop() - 1;
-        if (newSubstance > 0)
+        int newToolValue = tools.Dequeue() + 1;
+        tools.Enqueue(newToolValue);
+        int newSubstanceValue = substances.Pop() - 1;
+        if (newSubstanceValue > 0)
         {
-            substances.Push(newSubstance);
+            substances.Push(newSubstanceValue);
         }
     }
 }
 
-if (challenges.Count > 0)
+if (challenges.Any())
 {
     Console.WriteLine("Harry is lost in the temple. Oblivion awaits him.");
 }
 else
 {
     Console.WriteLine("Harry found an ostracon, which is dated to the 6th century BCE.");
-
 }
 
 if (tools.Any())
 {
-    Console.Write("Tools: ");
-    Console.WriteLine(string.Join(", ", tools));
+    Console.WriteLine($"Tools: {string.Join(", ", tools)}");
 }
 if (substances.Any())
 {
-    Console.Write("Substances: ");
-    Console.WriteLine(string.Join(", ", substances));
+    Console.WriteLine($"Substances: {string.Join(", ", substances)}");
 }
-
-if (challenges.Count > 0)
+if (challenges.Any())
 {
-    Console.Write("Challenges: ");
-    Console.WriteLine(string.Join(", ", challenges));
+    Console.WriteLine($"Challenges: {string.Join(", ", challenges)}");
 }
