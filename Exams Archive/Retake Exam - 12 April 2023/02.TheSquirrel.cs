@@ -1,146 +1,136 @@
 int size = int.Parse(Console.ReadLine());
-
-Queue<string> commands = new Queue<string>(Console.ReadLine()
-    .Split(", ", StringSplitOptions.RemoveEmptyEntries)
-    .ToList());
+List<string> directions = Console.ReadLine().Split(", ", StringSplitOptions.RemoveEmptyEntries).ToList();
 
 string[,] matrix = new string[size, size];
+int rows = size;
+int cols = size;
+int sqRow = 0;
+int sqCol = 0;
 
-int squirrelRow = 0;
-int squirrelCol = 0;
-int hazelnutsToCollect = 0;
-int traps = 0;
-for (int row = 0; row < size; row++)
+int hazelnutsCount = 0;
+
+for (int row = 0; row < rows; row++)
 {
     string matrixInfo = Console.ReadLine();
-    for (int col = 0; col < size; col++)
+
+    for (int col = 0; col < cols; col++)
     {
         matrix[row, col] = matrixInfo[col].ToString();
+
         if (matrix[row, col] == "s")
         {
-            squirrelRow = row;
-            squirrelCol = col;
+            sqRow = row;
+            sqCol = col;
         }
-        else if (matrix[row, col] == "h")
+        if (matrix[row, col] == "h")
         {
-            hazelnutsToCollect++;
-        }
-        else if (matrix[row, col] == "t")
-        {
-            traps++;
+            hazelnutsCount++;
         }
     }
 }
 
 int collectedHazelnuts = 0;
+bool isOutOfArea = false;
 bool isTrapped = false;
-bool isOutOfRange = false;
-bool isCollectedHEnough = false;
-while (commands.Any())
+bool hasCollectedEnoughHazelnuts = false;
+
+while (directions.Count > 0)
 {
-    string command = commands.Dequeue();
-    if (command == "up" && squirrelRow - 1 >= 0)
+    string command = directions[0];
+
+    if (command == "up" && sqRow - 1 >= 0)
     {
-        if (matrix[squirrelRow - 1, squirrelCol] == "h")
+        if (matrix[sqRow-1,sqCol] == "h")
         {
-            hazelnutsToCollect++;
             collectedHazelnuts++;
-            matrix[squirrelRow - 1, squirrelCol] = "*";
+            matrix[sqRow - 1, sqCol] = "*";
             if (collectedHazelnuts == 3)
             {
-                isCollectedHEnough = true;
-                break;
+                hasCollectedEnoughHazelnuts = true;
             }
         }
-        else if (matrix[squirrelRow - 1, squirrelCol] == "t")
+        else if (matrix[sqRow-1,sqCol] == "t")
         {
             isTrapped = true;
-            break;
         }
-        squirrelRow--;
+        sqRow--;
     }
-    else if (command == "down" && squirrelRow + 1 < size)
+    else if (command == "down" && sqRow + 1 < rows)
     {
-        if (matrix[squirrelRow + 1, squirrelCol] == "h")
+        if (matrix[sqRow + 1, sqCol] == "h")
         {
-            hazelnutsToCollect++;
             collectedHazelnuts++;
-            matrix[squirrelRow + 1, squirrelCol] = "*";
+            matrix[sqRow + 1, sqCol] = "*";
             if (collectedHazelnuts == 3)
             {
-                isCollectedHEnough = true;
-                break;
+                hasCollectedEnoughHazelnuts = true;
             }
         }
-        else if (matrix[squirrelRow + 1, squirrelCol] == "t")
+        else if (matrix[sqRow + 1, sqCol] == "t")
         {
             isTrapped = true;
-            break;
         }
-        squirrelRow++;
+        sqRow++;
     }
-    else if (command == "left" && squirrelCol - 1 >= 0)
+    else if (command == "left" && sqCol - 1 >= 0)
     {
-        if (matrix[squirrelRow, squirrelCol - 1] == "h")
+        if (matrix[sqRow, sqCol-1] == "h")
         {
-            hazelnutsToCollect++;
             collectedHazelnuts++;
-            matrix[squirrelRow, squirrelCol - 1] = "*";
+            matrix[sqRow, sqCol - 1] = "*";
             if (collectedHazelnuts == 3)
             {
-                isCollectedHEnough = true;
-                break;
+                hasCollectedEnoughHazelnuts = true;
             }
         }
-        else if (matrix[squirrelRow, squirrelCol - 1] == "t")
+        else if (matrix[sqRow, sqCol-1] == "t")
         {
             isTrapped = true;
-            break;
         }
-        squirrelCol--;
+        sqCol--;
     }
-    else if (command == "right" && squirrelCol + 1 < size)
+    else if (command == "right" && sqCol + 1 < cols)
     {
-        if (matrix[squirrelRow, squirrelCol + 1] == "h")
+        if (matrix[sqRow, sqCol + 1] == "h")
         {
-            hazelnutsToCollect++;
             collectedHazelnuts++;
-            matrix[squirrelRow, squirrelCol + 1] = "*";
+            matrix[sqRow, sqCol + 1] = "*";
             if (collectedHazelnuts == 3)
             {
-                isCollectedHEnough = true;
-                break;
+                hasCollectedEnoughHazelnuts = true;
             }
         }
-        else if (matrix[squirrelRow, squirrelCol + 1] == "t")
+        else if (matrix[sqRow, sqCol + 1] == "t")
         {
             isTrapped = true;
-            break;
         }
-        squirrelCol++;
+        sqCol++;
     }
     else
     {
-        isOutOfRange = true;
+        isOutOfArea = true;
     }
+
+    if (isOutOfArea)
+    {
+        Console.WriteLine("The squirrel is out of the field.");
+        break;
+    }
+    if (isTrapped)
+    {
+        Console.WriteLine("Unfortunately, the squirrel stepped on a trap...");
+        break;
+    }
+    if (hasCollectedEnoughHazelnuts) 
+    {
+        Console.WriteLine("Good job! You have collected all hazelnuts!");
+        break;
+    }
+
+    directions.Remove(command);
 }
 
-if (isOutOfRange)
-{
-    Console.WriteLine("The squirrel is out of the field.");
-}
-
-if (isTrapped)
-{
-    Console.WriteLine("Unfortunately, the squirrel stepped on a trap...");
-}
-
-if (isCollectedHEnough)
-{
-    Console.WriteLine("Good job! You have collected all hazelnuts!");
-}
-
-if(isTrapped != true && isOutOfRange != true && isCollectedHEnough != true)
+if (!hasCollectedEnoughHazelnuts && !isOutOfArea && !isTrapped)
 {
     Console.WriteLine("There are more hazelnuts to collect.");
 }
