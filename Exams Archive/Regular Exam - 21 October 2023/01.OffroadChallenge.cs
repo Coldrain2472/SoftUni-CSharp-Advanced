@@ -1,34 +1,32 @@
-using System.Diagnostics.Metrics;
+using System.Security.Cryptography;
 
 Stack<int> fuel = new Stack<int>(Console.ReadLine()
     .Split(" ", StringSplitOptions.RemoveEmptyEntries)
-    .Select(int.Parse)
-    .ToArray());
+    .Select(int.Parse));
 
 Queue<int> consumption = new Queue<int>(Console.ReadLine()
     .Split(" ", StringSplitOptions.RemoveEmptyEntries)
-    .Select(int.Parse)
-    .ToArray());
+    .Select(int.Parse));
 
-Queue<int> fuelAmountNeeded = new Queue<int>(Console.ReadLine()
+Queue<int> requiredFuel = new Queue<int>(Console.ReadLine()
     .Split(" ", StringSplitOptions.RemoveEmptyEntries)
-    .Select(int.Parse)
-    .ToArray());
+    .Select(int.Parse));
 
 int count = 0;
+List<int> reachedAltitudes = new List<int>();
 bool hasReachedAny = false;
-while (fuel.Any() && consumption.Any())
+while (true)
 {
+    int result = fuel.Peek() - consumption.Peek();
     count++;
-    int sum = fuel.Peek() - consumption.Peek();
-    
-    if (sum>= fuelAmountNeeded.Peek())
+
+    if (result >= requiredFuel.Peek())
     {
-        hasReachedAny = true;
         fuel.Pop();
         consumption.Dequeue();
-        fuelAmountNeeded.Dequeue();
+        requiredFuel.Dequeue();
         Console.WriteLine($"John has reached: Altitude {count}");
+        hasReachedAny = true;
     }
     else
     {
@@ -53,9 +51,10 @@ while (fuel.Any() && consumption.Any())
         }
         return;
     }
-    if (fuelAmountNeeded.Count == 0)
+
+    if (!requiredFuel.Any())
     {
-        Console.WriteLine($"John has reached all the altitudes and managed to reach the top!");
+        Console.WriteLine("John has reached all the altitudes and managed to reach the top!");
         return;
     }
 }
