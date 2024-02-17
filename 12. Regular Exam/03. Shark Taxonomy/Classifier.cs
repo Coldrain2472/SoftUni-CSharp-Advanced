@@ -36,7 +36,6 @@ namespace SharkTaxonomy
 
         public string GetLargestShark()
         {
-
             Shark shark = Species.OrderByDescending(x => x.Length).First();
             return shark.ToString();
         }

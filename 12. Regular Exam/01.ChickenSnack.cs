@@ -28,6 +28,7 @@ while (money.Any() && prices.Any())
         {
             money.Push(money.Pop() + difference);
         }
+        
         prices.Dequeue();
     }
     else if (moneyValue < priceValue)
