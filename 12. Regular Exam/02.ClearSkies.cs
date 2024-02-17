@@ -27,7 +27,6 @@ for (int row = 0; row < rows; row++)
         if (matrix[row, col] == 'R')
         {
             repairPoints++;
-
         }
     }
 }
@@ -40,17 +39,14 @@ while (true)
 
     if (command == "up")
     {
-
         posRow--;
     }
     else if (command == "down")
     {
-
         posRow++;
     }
     else if (command == "left")
     {
-
         posCol--;
     }
     else if (command == "right")
@@ -66,7 +62,6 @@ while (true)
     {
         armor = 300;
         matrix[posRow, posCol] = '-';
-
     }
     else if (matrix[posRow, posCol] == 'E')
     {
@@ -87,7 +82,6 @@ while (true)
             matrix[posRow, posCol] = 'J';
             break;
         }
-
     }
 }
 
@@ -106,7 +100,6 @@ static void PrintMatrix(char[,] matrix)
 {
     for (int row = 0; row < matrix.GetLength(0); row++)
     {
-
         for (int col = 0; col < matrix.GetLength(1); col++)
         {
             Console.Write(matrix[row, col]);
