@@ -12,6 +12,7 @@ namespace SharkTaxonomy
 
         public int Capacity { get; set; }
         public List<Shark> Species { get; set; }
+        
         public int GetCount => Species.Count;
 
         public void AddShark(Shark shark)
